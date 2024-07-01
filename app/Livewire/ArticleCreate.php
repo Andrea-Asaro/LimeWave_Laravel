@@ -64,11 +64,13 @@ class ArticleCreate extends Component
             $path = $image->store($newFileName, 'public');
             $newImage= $article->images()->create(["path"=>$path]);
 
-            RemoveFaces::withChain([
-                new ResizeImage($newImage->path, 720, 720),
-                new GoogleVisionSafeSearch($newImage->id),
-                new GoogleVisionLabelImage($newImage->id),
-            ])->dispatch($newImage->id);
+            dispatch(new ResizeImage($newImage->path, 720, 720));
+
+            // RemoveFaces::withChain([
+            //     new ResizeImage($newImage->path, 720, 720),
+            //     new GoogleVisionSafeSearch($newImage->id),
+            //     new GoogleVisionLabelImage($newImage->id),
+            // ])->dispatch($newImage->id); vecchia versione con api google funzionanti
 
         }
 
